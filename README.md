@@ -26,12 +26,10 @@ A basic Python HTTP interaction script was developed using the Requests library 
 ### Project Structure
 
 ```text
-Financial-Web-Security-Scanner/
+Financial-Platform-Scanner
 ├── src/
-│   ├── scanner.py
 │   └── http_basics.py
 ├── reports/
-│   ├── report.json
 │   └── week2_http_report.json
 ├── Docs/
 │   └── week2_http_analysis.md
@@ -46,13 +44,13 @@ Financial-Web-Security-Scanner/
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/Robert-ux-dev/Financial-Web-Security-Scanner.git
+   git clone https://github.com/Robert-ux-dev/Financial-Platform-Scanner.git
    ```
 
 2. Navigate into the project directory:
 
    ```bash
-   cd Financial-Web-Security-Scanner
+   cd Financial-Platform-Scanner
    ```
 
 3. Install the required Python dependencies:

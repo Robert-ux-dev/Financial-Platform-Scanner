@@ -33,7 +33,7 @@ Financial-Web-Security-Scanner/
 ├── reports/
 │   ├── report.json
 │   └── week2_http_report.json
-├── docs/
+├── Docs/
 │   └── week2_http_analysis.md
 ├── requirements.txt
 └── README.md
@@ -103,7 +103,7 @@ The analysis covers:
 - Cookie and session behaviour
 - HTTPS usage and relevant security headers
 
-Detailed observations are documented in `docs/week2_http_analysis.md`.
+Detailed observations are documented in `Docs/week2_http_analysis.md`.
 
 ### Security and Testing Scope
 

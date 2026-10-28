@@ -1,32 +1,45 @@
 {
     "project": "Automated Web Application Security Assessment for Financial Platforms",
-    "task": "Week 2 - Python for Security and HTTP Fundamentals",
+    "scan_time_utc": "2026-10-28T19:44:31.297600+00:00",
     "target": "http://127.0.0.1:3000",
-    "scan_time_utc": "2026-10-25T17:28:36.021307+00:00",
-    "method": "GET",
-    "status": "completed",
-    "http_status_code": 200,
-    "response_headers": {
-        "Access-Control-Allow-Origin": "*",
-        "X-Content-Type-Options": "nosniff",
-        "X-Frame-Options": "SAMEORIGIN",
-        "Feature-Policy": "payment 'self'",
-        "X-Recruiting": "/#/jobs",
-        "Accept-Ranges": "bytes",
-        "Cache-Control": "public, max-age=0",
-        "Last-Modified": "Sun, 25 Oct 2026 17:00:35 GMT",
-        "ETag": "W/\"24b1-1a17401c5ac\"",
-        "Content-Type": "text/html; charset=UTF-8",
-        "Vary": "Accept-Encoding",
-        "Content-Encoding": "gzip",
-        "Date": "Sun, 25 Oct 2026 17:28:36 GMT",
-        "Connection": "keep-alive",
-        "Keep-Alive": "timeout=5",
-        "Transfer-Encoding": "chunked"
-    },
-    "content_type": "text/html; charset=UTF-8",
-    "server_header": null,
-    "response_size_bytes": 9393,
-    "response_preview": "<!--\n  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.\n  ~ SPDX-License-Identifier: MIT\n  -->\n\n<!doctype html>\n<html lang=\"en\" data-beasties-container>\n<head>\n  <meta charset=\"utf-8\">\n  <title>OWASP Juice Shop</title>\n  <meta name=\"description\" content=\"Probably the m",
-    "error": null
+    "scope": "Local lab; GET request only",
+    "observations": [
+        {
+            "requested_url": "http://127.0.0.1:3000",
+            "final_url": "http://127.0.0.1:3000/",
+            "method": "GET",
+            "status_code": 200,
+            "reason": "OK",
+            "content_type": "text/html; charset=UTF-8",
+            "server_header": null,
+            "response_headers": {
+                "Access-Control-Allow-Origin": "*",
+                "X-Content-Type-Options": "nosniff",
+                "X-Frame-Options": "SAMEORIGIN",
+                "Feature-Policy": "payment 'self'",
+                "X-Recruiting": "/#/jobs",
+                "Accept-Ranges": "bytes",
+                "Cache-Control": "public, max-age=0",
+                "Last-Modified": "Wed, 28 Oct 2026 18:45:38 GMT",
+                "ETag": "W/\"24b1-1a183d5057b\"",
+                "Content-Type": "text/html; charset=UTF-8",
+                "Vary": "Accept-Encoding",
+                "Content-Encoding": "gzip",
+                "Date": "Wed, 28 Oct 2026 19:44:31 GMT",
+                "Connection": "keep-alive",
+                "Keep-Alive": "timeout=5",
+                "Transfer-Encoding": "chunked"
+            },
+            "security_headers": {
+                "Content-Security-Policy": null,
+                "Strict-Transport-Security": null,
+                "X-Content-Type-Options": "nosniff",
+                "X-Frame-Options": "SAMEORIGIN",
+                "Referrer-Policy": null,
+                "Permissions-Policy": null
+            },
+            "cookies_received": [],
+            "response_size_bytes": 9393
+        }
+    ]
 }

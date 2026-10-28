@@ -1,62 +1,117 @@
 
-import requests
 import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-# Project directories
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-REPORTS_DIR = PROJECT_ROOT / "reports"
-REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+import requests
 
-# Target application
-url = "http://127.0.0.1:3000"
+TARGET_URL = "http://127.0.0.1:3000"
+TIMEOUT = 10
 
-# Report data
-report = {
-    "project": "Automated Web Application Security Assessment for Financial Platforms",
-    "task": "Week 2 - Python for Security and HTTP Fundamentals",
-    "target": url,
-    "scan_time_utc": datetime.now(timezone.utc).isoformat(),
-    "method": "GET",
-    "status": "failed",
-    "http_status_code": None,
-    "response_headers": {},
-    "content_type": None,
-    "server_header": None,
-    "response_size_bytes": None,
-    "response_preview": None,
-    "error": None
-}
+REPORT_PATH = (
+    Path(__file__).resolve().parent.parent
+    / "reports"
+    / "week2_http_report.json"
+)
 
-try:
-    response = requests.get(url, timeout=10)
+SECURITY_HEADERS = [
+    "Content-Security-Policy",
+    "Strict-Transport-Security",
+    "X-Content-Type-Options",
+    "X-Frame-Options",
+    "Referrer-Policy",
+    "Permissions-Policy",
+]
 
-    report.update({
-        "status": "completed",
-        "http_status_code": response.status_code,
-        "response_headers": dict(response.headers),
-        "content_type": response.headers.get("Content-Type"),
-        "server_header": response.headers.get("Server"),
+
+def inspect_http_response(response):
+    """Collect basic HTTP response and security information."""
+
+    headers = dict(response.headers)
+
+    security_headers = {
+        name: headers.get(name)
+        for name in SECURITY_HEADERS
+    }
+
+    cookies = []
+    for cookie in response.cookies:
+        cookies.append({
+            "name": cookie.name,
+            "secure": cookie.secure,
+            "httponly": cookie.has_nonstandard_attr("HttpOnly")
+            or "httponly" in cookie._rest,
+            "samesite": cookie._rest.get("SameSite"),
+        })
+
+    return {
+        "requested_url": TARGET_URL,
+        "final_url": response.url,
+        "method": response.request.method,
+        "status_code": response.status_code,
+        "reason": response.reason,
+        "content_type": headers.get("Content-Type"),
+        "server_header": headers.get("Server"),
+        "response_headers": headers,
+        "security_headers": security_headers,
+        "cookies_received": cookies,
         "response_size_bytes": len(response.content),
-        "response_preview": response.text[:300]
-    })
+    }
 
-    print("Target URL:", url)
-    print("Status Code:", response.status_code)
-    print("Content Type:", response.headers.get("Content-Type"))
-    print("Server Header:", response.headers.get("Server"))
-    print("Response Size:", len(response.content), "bytes")
 
-except requests.exceptions.RequestException as error:
-    report["error"] = str(error)
-    print("Request failed:", error)
+def main():
+    report = {
+        "project": (
+            "Automated Web Application Security Assessment "
+            "for Financial Platforms"
+        ),
+        "scan_time_utc": datetime.now(
+            timezone.utc
+        ).isoformat(),
+        "target": TARGET_URL,
+        "scope": "Local lab; GET request only",
+        "observations": [],
+    }
 
-# Save the report
-report_path = REPORTS_DIR / "week2_http_report.json"
+    try:
+        response = requests.get(
+            TARGET_URL,
+            timeout=TIMEOUT,
+            allow_redirects=True,
+        )
 
-with report_path.open("w", encoding="utf-8") as file:
-    json.dump(report, file, indent=4)
+        report["observations"].append(
+            inspect_http_response(response)
+        )
 
-print("\nReport saved to:")
-print(report_path)
+        print("HTTP request completed.")
+        print("Method:", response.request.method)
+        print("Status code:", response.status_code)
+        print("Final URL:", response.url)
+        print("Content-Type:", response.headers.get("Content-Type"))
+
+        print("\nSecurity response headers:")
+        for name, value in report["observations"][0][
+            "security_headers"
+        ].items():
+            print(f"{name}: {value or 'Not present'}")
+
+    except requests.RequestException as error:
+        report["error"] = str(error)
+        print("HTTP request failed:", error)
+
+    REPORT_PATH.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    REPORT_PATH.write_text(
+        json.dumps(report, indent=4),
+        encoding="utf-8",
+    )
+
+    print("\nReport saved to:", REPORT_PATH)
+
+
+if __name__ == "__main__":
+    main()
